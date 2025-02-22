@@ -7,7 +7,8 @@ from sklearn.preprocessing import LabelEncoder  # type: ignore
 from sklearn.linear_model import LinearRegression  # type: ignore
 from pymongo.mongo_client import MongoClient  # type: ignore
 from pymongo.server_api import ServerApi  # type: ignore
-
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Retrieve credentials securely from Streamlit Secrets
 mongo_uri = st.secrets["mongodb"]["uri"]
@@ -43,6 +44,75 @@ def predict_data(data, model_name):
     processed_data = processing_input_data(data, scaler)
     prediction = model.predict(processed_data)
     return prediction
+    
+def plot_input_data(user_data):
+    
+    """
+    Plots the input user data as a bar chart with theme-aware styling.
+
+    This function filters numeric data from the provided user data dictionary
+    and creates a bar plot using Matplotlib. The plot's appearance is adjusted
+    based on the current Streamlit theme, ensuring optimal visibility in both
+    light and dark modes. The plot is displayed directly in a Streamlit app.
+
+    Args:
+        user_data (dict): A dictionary containing user input data with keys as
+                          parameter names and values as numeric data.
+
+    Returns:
+        None: This function displays the plot using Streamlit and does not
+              return any value.
+    """
+    # Filter numeric columns
+    user_data = {k: v for k, v in user_data.items() if isinstance(v, (int, float))}
+
+    # Detect Streamlit theme
+    st_theme = st.get_option("theme.base")  # 'light' or 'dark'
+    
+    # Adjust colors based on theme
+    if st_theme == "dark":
+        sns.set_style("darkgrid")  # Dark theme grid
+        text_color = "white"
+        grid_color = "gray"
+        bar_color = "cyan"  # Bright color for dark mode
+    else:
+        sns.set_style("whitegrid")  # Light theme grid
+        text_color = "black"
+        grid_color = "lightgray"
+        bar_color = "royalblue"  # Darker color for light mode
+
+    fig, ax = plt.subplots(figsize=(10, 5), facecolor="none")  # Transparent background
+
+    # Create bar plot with a single color for visibility
+    bars = ax.bar(user_data.keys(), user_data.values(), color=bar_color, edgecolor="black", linewidth=1.2)
+    
+    # Set labels and title with theme-aware colors
+    plt.xticks(rotation=45, fontsize=12, ha="right", color="white")
+    plt.xlabel("Parameters", fontsize=14, fontweight="bold", color="white")
+    plt.yticks(color="white")  # Set y-axis values color
+    plt.ylabel("Values", fontsize=14, fontweight="bold", color="white")
+    plt.title("Patient Input Data & Predictions", fontsize=16, fontweight="bold", color="white")
+
+    # Add grid for better readability
+    ax.grid(axis="y", linestyle="--", alpha=0.5, color=grid_color)
+
+    # Set background color to match theme
+    ax.set_facecolor("none")  # Transparent, blends with Streamlit background
+
+    # Add values on top of bars with contrasting text color
+    for bar in bars:
+        height = bar.get_height()
+        ax.annotate(f"{height:.2f}", 
+                    xy=(bar.get_x() + bar.get_width() / 2, height), 
+                    xytext=(0, 5), 
+                    textcoords="offset points", 
+                    ha="center", 
+                    fontsize=12, 
+                    fontweight="bold",
+                    color="white")
+
+    # Display the plot in Streamlit
+    st.pyplot(fig)
 
 # Main Streamlit App
 def main():
