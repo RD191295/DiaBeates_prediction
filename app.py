@@ -105,23 +105,26 @@ def main():
     }
 
     if st.sidebar.button("🚀 Predict"):
-        # Map Model Selection
-        model_name = "Ridge_model.pkl" if model_choice == "🤖 Ridge Regression" else "Lasso_model.pkl"
-        model_Id = "Ridge" if model_choice == "🤖 Ridge Regression" else "Lasso"
-
-        # Make Prediction
-        prediction = predict_data(user_data, model_name)
+        ith st.spinner("🕒 Processing your input... Please wait"):
+            time.sleep(2)  # Simulate a loading delay
          
-        # Store user data in MongoDB
-        user_data["quantitative measure of disease progression"] = float(prediction[0])
-        user_data["model_name"] = model_Id
-        
-        # Convert NumPy types to Python native types
-        document = {key: int(value) if isinstance(value, np.integer) else   
-                 float(value) if isinstance(value, np.floating) else value
-            for key, value in user_data.items()}
-        
-        collection.insert_one(document)
+            # Map Model Selection
+            model_name = "Ridge_model.pkl" if model_choice == "🤖 Ridge Regression" else "Lasso_model.pkl"
+            model_Id = "Ridge" if model_choice == "🤖 Ridge Regression" else "Lasso"
+
+            # Make Prediction
+            prediction = predict_data(user_data, model_name)
+             
+            # Store user data in MongoDB
+            user_data["quantitative measure of disease progression"] = float(prediction[0])
+            user_data["model_name"] = model_Id
+            
+            # Convert NumPy types to Python native types
+            document = {key: int(value) if isinstance(value, np.integer) else   
+                     float(value) if isinstance(value, np.floating) else value
+                for key, value in user_data.items()}
+            
+            collection.insert_one(document)
         
         # Display Results
         st.markdown(f"## 🎯 Prediction Result")
