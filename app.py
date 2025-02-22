@@ -105,7 +105,7 @@ def main():
     }
 
     if st.sidebar.button("🚀 Predict"):
-        ith st.spinner("🕒 Processing your input... Please wait"):
+        with st.spinner("🕒 Processing your input... Please wait"):
             time.sleep(2)  # Simulate a loading delay
          
             # Map Model Selection
