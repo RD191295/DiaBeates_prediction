@@ -219,6 +219,12 @@ def main():
             "Consult a medical professional for accurate clinical assessment.*",
             unsafe_allow_html=True
         )
+        
+     # 👨‍💻 Footer - Created By
+    st.markdown(
+        "<br><hr><center>🚀 Created by **Your Name** | Made with ❤️ using Streamlit</center><hr>",
+        unsafe_allow_html=True
+    )
 
 if __name__ == "__main__":
     main()
