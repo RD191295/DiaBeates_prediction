@@ -7,8 +7,7 @@ from sklearn.linear_model import LinearRegression  # type: ignore
 from pymongo.mongo_client import MongoClient  # type: ignore
 from pymongo.server_api import ServerApi  # type: ignore
 
-# Retrieve credentials securely from Streamlit Secrets
-#mongo_uri = uri = "mongodb+srv://bitcoinee12:Rd191295@diacluster0.lw673.mongodb.net/?retryWrites=true&w=majority&appName=DiaCluster0"
+
 # Retrieve credentials securely from Streamlit Secrets
 mongo_uri = st.secrets["mongodb"]["uri"]
 db_name = st.secrets["mongodb"]["database"]
@@ -18,10 +17,6 @@ collection_name = st.secrets["mongodb"]["collection"]
 client = MongoClient(mongo_uri, server_api=ServerApi('1'))
 database = client[db_name]
 collection = database[collection_name]
-
-#client = MongoClient(uri, server_api=ServerApi('1'))
-#database = client['Diabetes_prediction']
-#collection = database['Diabetes_data']  
 
 # Function to load the model
 def load_model(model_name):
@@ -55,10 +50,16 @@ def main():
     st.markdown("🔬 **Using Machine Learning to Estimate Diabetes Progression Over Time**")
 
     # Sidebar Layout
-    st.sidebar.header("⚙️ **Model Selection**")
+    st.sidebar.header("⚙️ **Configuration**")
+    st.sidebar.write("Select the prediction model.")
+
     model_choice = st.sidebar.radio("Choose Model", ["🤖 Ridge Regression", "🧮 Lasso Regression"])
 
-    st.sidebar.header("📋 **Input Parameters**")
+    st.sidebar.markdown("---")  # Add a divider
+
+    st.sidebar.header("📋 **Patient Data Input**")
+    st.sidebar.write("Fill in the details below to predict diabetes progression.")
+    
     age = st.sidebar.slider("🎂 Age of Patient", 18, 80, 25)
     sex = st.sidebar.selectbox("⚤ Sex of Patient", ["Male", "Female"])
     bmi = st.sidebar.slider("⚖️ BMI of Patient", 18.0, 43.0, 25.0)
