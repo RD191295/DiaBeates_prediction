@@ -2,6 +2,7 @@ import streamlit as st  # type: ignore
 import numpy as np  # type: ignore
 import pandas as pd  # type: ignore
 import pickle
+import time
 from sklearn.preprocessing import LabelEncoder  # type: ignore
 from sklearn.linear_model import LinearRegression  # type: ignore
 from pymongo.mongo_client import MongoClient  # type: ignore
