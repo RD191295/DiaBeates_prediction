@@ -117,11 +117,11 @@ def plot_input_data(user_data):
 # Main Streamlit App
 def main():
     """Streamlit app for diabetes prediction."""
-    st.set_page_config(page_title="🔬 Diabetes Progression Prediction", layout="wide")
+    st.set_page_config(page_title="🔬 Diabetes Predictor", page_icon="🩺", layout="wide")
 
-    st.title("🔍 **Quantified Diabetes Progression Predictor**")
+    st.title("🚀 **AI-Based Diabetes Progression Prediction**")
     st.markdown("🔬 **Using Machine Learning to Estimate Diabetes Progression Over Time**")
-    
+
     # 🎨 Custom Background Styling
     st.markdown(
     """
