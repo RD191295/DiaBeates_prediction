@@ -222,7 +222,7 @@ def main():
         
      # 👨‍💻 Footer - Created By
     st.markdown(
-        "<br><hr><center>🚀 Created by **Your Name** | Made with ❤️ using Streamlit</center><hr>",
+        "<br><hr><center>🚀 Created by **Raj Dalsaniya** | Made with ❤️ using Streamlit</center><hr>",
         unsafe_allow_html=True
     )
 
