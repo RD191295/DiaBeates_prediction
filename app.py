@@ -9,13 +9,11 @@ from pymongo.server_api import ServerApi  # type: ignore
 
 # Retrieve credentials securely from Streamlit Secrets
 mongo_uri = uri = "mongodb+srv://bitcoinee12:Rd191295@diacluster0.lw673.mongodb.net/?retryWrites=true&w=majority"
-db_name = st.secrets["mongodb"]["database"]
-collection_name = st.secrets["mongodb"]["collection"]
 
-# Connect to MongoDB
-client = MongoClient(mongo_uri, server_api=ServerApi('1'))
-database = client[db_name]
-collection = database[collection_name]
+
+client = MongoClient(uri, server_api=ServerApi('1'))
+database = client['Diabetes_prediction']
+collection = database['Diabetes_data']  
 
 # Function to load the model
 def load_model(model_name):
