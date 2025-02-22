@@ -8,7 +8,7 @@ from pymongo.mongo_client import MongoClient  # type: ignore
 from pymongo.server_api import ServerApi  # type: ignore
 
 # Retrieve credentials securely from Streamlit Secrets
-mongo_uri = st.secrets["mongodb"]["uri"]
+mongo_uri = uri = "mongodb+srv://bitcoinee12:Rd191295@diacluster0.lw673.mongodb.net/?retryWrites=true&w=majority"
 db_name = st.secrets["mongodb"]["database"]
 collection_name = st.secrets["mongodb"]["collection"]
 
