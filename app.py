@@ -18,6 +18,24 @@ client = MongoClient(mongo_uri, server_api=ServerApi('1'))
 database = client[db_name]
 collection = database[collection_name]
 
+# 🎨 Custom Background Styling
+st.markdown(
+    """
+    <style>
+        body {
+            background: linear-gradient(to right, #ffefba, #ffffff);
+        }
+        div.stButton > button:first-child {
+            background-color: #ff4b4b;
+            color: white;
+            font-size: 18px;
+            border-radius: 10px;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Function to load the model
 def load_model(model_name):
     """Loads the saved model and scaler from a pickle file."""
@@ -48,7 +66,7 @@ def main():
 
     st.title("🔍 **Quantified Diabetes Progression Predictor**")
     st.markdown("🔬 **Using Machine Learning to Estimate Diabetes Progression Over Time**")
-
+    
     # Sidebar Layout
     st.sidebar.header("⚙️ **Configuration**")
     st.sidebar.write("Select the prediction model.")
