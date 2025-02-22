@@ -7,8 +7,8 @@ from sklearn.preprocessing import LabelEncoder  # type: ignore
 from sklearn.linear_model import LinearRegression  # type: ignore
 from pymongo.mongo_client import MongoClient  # type: ignore
 from pymongo.server_api import ServerApi  # type: ignore
-import matplotlib.pyplot as plt
-import seaborn as sns
+import matplotlib.pyplot as plt # type: ignore
+import seaborn as sns # type: ignore
 
 # Retrieve credentials securely from Streamlit Secrets
 mongo_uri = st.secrets["mongodb"]["uri"]
@@ -21,17 +21,46 @@ database = client[db_name]
 collection = database[collection_name]
 
 
-
 # Function to load the model
 def load_model(model_name):
-    """Loads the saved model and scaler from a pickle file."""
+    """Loads the saved model and its scaler from a pickle file.
+
+    Parameters
+    ----------
+    model_name : str
+        The name of the file containing the saved model and scaler.
+
+    Returns
+    -------
+    model : sklearn.linear_model
+        The loaded model.
+    scaler : sklearn.preprocessing
+        The loaded scaler.
+    """
     with open(model_name, 'rb') as file:
         model, scaler = pickle.load(file)
     return model, scaler
 
 # Function to process input data
 def processing_input_data(data, scaler):
-    """Processes input data before prediction."""
+    """Processes the input data to prepare it for the model.
+
+    The input data is first converted into a DataFrame. The categorical variable
+    'SEX' is then mapped to numerical values (1 for 'Male', 2 for 'Female').
+    Finally, the data is transformed by the scaler to standardize the features.
+
+    Parameters
+    ----------
+    data : dict
+        A dictionary containing the input data.
+    scaler : object
+        A scaler object from scikit-learn.
+
+    Returns
+    -------
+    data_transformed : array
+        The transformed data ready for prediction.
+    """
     data = pd.DataFrame([data])
     data["SEX"] = data["SEX"].map({"Male": 1, "Female": 2})
     data_transformed = scaler.transform(data)
@@ -39,7 +68,24 @@ def processing_input_data(data, scaler):
 
 # Function for prediction
 def predict_data(data, model_name):
-    """Predicts the output based on input data."""
+    """
+    Predicts the output based on the input data.
+
+    The input data is processed by the processing_input_data function and then
+    passed to the loaded model for prediction.
+
+    Parameters
+    ----------
+    data : dict
+        A dictionary containing the input data.
+    model_name : str
+        The name of the file containing the saved model and scaler.
+
+    Returns
+    -------
+    prediction : array
+        The predicted output.
+    """
     model, scaler = load_model(model_name)
     processed_data = processing_input_data(data, scaler)
     prediction = model.predict(processed_data)
@@ -116,7 +162,13 @@ def plot_input_data(user_data):
 
 # Main Streamlit App
 def main():
-    """Streamlit app for diabetes prediction."""
+    """
+    Main function containing the Streamlit app logic. It sets the page configuration,
+    defines the UI layout and elements, processes user input data, makes a prediction using the
+    loaded model, and displays the results. Additionally, it stores the user data in a MongoDB
+    collection.
+
+    """
     st.set_page_config(page_title="🔬 Diabetes Predictor", page_icon="🩺", layout="wide")
 
     st.title("🚀 **AI-Based Diabetes Progression Prediction**")
@@ -227,4 +279,5 @@ def main():
     )
 
 if __name__ == "__main__":
+    # Run the Streamlit app
     main()
