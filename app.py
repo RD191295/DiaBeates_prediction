@@ -4,8 +4,18 @@ import pandas as pd  # type: ignore
 import pickle
 from sklearn.preprocessing import LabelEncoder  # type: ignore
 from sklearn.linear_model import LinearRegression  # type: ignore
-#from pymongo.mongo_client import MongoClient  # type: ignore
-#from pymongo.server_api import ServerApi  # type: ignore
+from pymongo.mongo_client import MongoClient  # type: ignore
+from pymongo.server_api import ServerApi  # type: ignore
+
+# Retrieve credentials securely from Streamlit Secrets
+mongo_uri = st.secrets["mongodb"]["uri"]
+db_name = st.secrets["mongodb"]["database"]
+collection_name = st.secrets["mongodb"]["collection"]
+
+# Connect to MongoDB
+client = MongoClient(mongo_uri, server_api=ServerApi('1'))
+database = client[db_name]
+collection = database[collection_name]
 
 # Function to load the model
 def load_model(model_name):
@@ -73,8 +83,17 @@ def main():
         
         # Make Prediction
         prediction = predict_data(user_data, model_name)
-        predicted_value = float(prediction[0])  # Convert to float
-
+         
+        # Store user data in MongoDB
+        user_data["quantitative measure of disease progression"] = float(prediction[0])
+        user_data["model_name"] = model_name
+        # Convert NumPy types to Python native types
+        document = {key: int(value) if isinstance(value, np.integer) else   
+                 float(value) if isinstance(value, np.floating) else value
+            for key, value in user_data.items()}
+        
+        collection.insert_one(document)
+        
         # Display Results
         st.markdown(f"## 🎯 Prediction Result")
         st.success(f"📊 **Estimated Disease Progression Score: {predicted_value:.2f}**")
