@@ -201,6 +201,9 @@ def main():
         st.markdown(f"## 🎯 Prediction Result")
         st.success(f"📊 **Estimated Disease Progression Score: {prediction[0]:.2f}**")
 
+        # Show Data Visualization
+        plot_input_data(user_data)
+        
         # Explanation Section
         st.markdown("## 📌 Explanation of Prediction")
         st.info(
