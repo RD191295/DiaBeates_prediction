@@ -94,7 +94,7 @@ def main():
         
         # Display Results
         st.markdown(f"## 🎯 Prediction Result")
-        st.success(f"📊 **Estimated Disease Progression Score: {prediction:.2f}**")
+        st.success(f"📊 **Estimated Disease Progression Score: {prediction[0]:.2f}**")
 
         # Explanation Section
         st.markdown("## 📌 Explanation of Prediction")
